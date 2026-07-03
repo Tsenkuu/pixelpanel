@@ -107,7 +107,7 @@ const isDeploying = ref(false)
 
 const fetchGitHistory = async () => {
   try {
-    const res = await fetch(`http://localhost:3000/api/apps/${route.params.id}/history`, {
+    const res = await fetch(`/api/apps/${route.params.id}/history`, {
       headers: { 'Authorization': `Bearer ${localStorage.getItem('pixelpanel_token')}` }
     })
     if (res.ok) {
@@ -120,7 +120,7 @@ const fetchGitHistory = async () => {
 
 const fetchDeployments = async () => {
   try {
-    const res = await fetch(`http://localhost:3000/api/apps/${route.params.id}/deployments`, {
+    const res = await fetch(`/api/apps/${route.params.id}/deployments`, {
       headers: { 'Authorization': `Bearer ${localStorage.getItem('pixelpanel_token')}` }
     })
     if (res.ok) deployments.value = await res.json()
@@ -130,7 +130,7 @@ const fetchDeployments = async () => {
 const triggerDeploy = async () => {
   isDeploying.value = true
   try {
-    await fetch(`http://localhost:3000/api/apps/${route.params.id}/deploy`, {
+    await fetch(`/api/apps/${route.params.id}/deploy`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${localStorage.getItem('pixelpanel_token')}` }
     })
@@ -145,7 +145,7 @@ const triggerDeploy = async () => {
 const rollback = async (deploymentId) => {
   if (!confirm('Are you sure you want to instantly rollback to this deployment?')) return
   try {
-    await fetch(`http://localhost:3000/api/apps/${route.params.id}/deployments/${deploymentId}/rollback`, {
+    await fetch(`/api/apps/${route.params.id}/deployments/${deploymentId}/rollback`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${localStorage.getItem('pixelpanel_token')}` }
     })

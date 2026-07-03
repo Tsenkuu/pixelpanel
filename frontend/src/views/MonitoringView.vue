@@ -224,7 +224,7 @@ onUnmounted(() => {
 })
 
 const setupSocket = () => {
-  socket = io('http://localhost:3000')
+  socket = io('/')
   
   socket.on('system:stats', (stats) => {
     if (currentTimeframe.value !== 'realtime') return // Ignore real-time ticks if viewing history
@@ -289,7 +289,7 @@ const setTimeframe = async (tf) => {
 
   // Fetch History
   try {
-    const res = await fetch(`http://localhost:3000/api/metrics/history?range=${tf}`, {
+    const res = await fetch(`/api/metrics/history?range=${tf}`, {
       headers: { 'Authorization': `Bearer ${localStorage.getItem('pixelpanel_token')}` }
     })
     const data = await res.json()
@@ -318,7 +318,7 @@ const setTimeframe = async (tf) => {
 const exportData = (format) => {
   // Use the history endpoint to trigger a download
   const tf = currentTimeframe.value === 'realtime' ? '1h' : currentTimeframe.value
-  window.location.href = `http://localhost:3000/api/metrics/export?format=${format}&range=${tf}&token=${localStorage.getItem('pixelpanel_token')}`
+  window.location.href = `/api/metrics/export?format=${format}&range=${tf}&token=${localStorage.getItem('pixelpanel_token')}`
   showExportMenu.value = false
 }
 

@@ -77,7 +77,7 @@ const newApp = ref({ name: '', gitRepo: '', startScript: 'npm start' })
 
 const fetchApps = async () => {
   try {
-    const res = await fetch('http://localhost:3000/api/apps', {
+    const res = await fetch('/api/apps', {
       headers: { 'Authorization': `Bearer ${localStorage.getItem('pixelpanel_token')}` }
     })
     if (res.ok) {
@@ -90,7 +90,7 @@ const fetchApps = async () => {
 
 const createApp = async () => {
   try {
-    const res = await fetch('http://localhost:3000/api/apps', {
+    const res = await fetch('/api/apps', {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ const createApp = async () => {
 const deleteApp = async (id) => {
   if (!confirm('Are you sure you want to delete this app?')) return
   try {
-    const res = await fetch(`http://localhost:3000/api/apps/${id}`, {
+    const res = await fetch(`/api/apps/${id}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${localStorage.getItem('pixelpanel_token')}` }
     })
@@ -123,7 +123,7 @@ const deleteApp = async (id) => {
 
 const actionApp = async (id, action) => {
   try {
-    const res = await fetch(`http://localhost:3000/api/apps/${id}/action/${action}`, {
+    const res = await fetch(`/api/apps/${id}/action/${action}`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${localStorage.getItem('pixelpanel_token')}` }
     })

@@ -141,7 +141,7 @@ onUnmounted(() => {
 
 const fetchTemplates = async () => {
   try {
-    const res = await fetch('http://localhost:3000/api/templates', {
+    const res = await fetch('/api/templates', {
       headers: { 'Authorization': `Bearer ${localStorage.getItem('pixelpanel_token')}` }
     })
     templates.value = await res.json()
@@ -153,7 +153,7 @@ const fetchTemplates = async () => {
 }
 
 const setupSocket = () => {
-  socket = io('http://localhost:3000')
+  socket = io('/')
   
   socket.on('marketplace:progress', (data) => {
     if (data.appName === deployForm.value.appName) {
@@ -189,7 +189,7 @@ const deployTemplate = async () => {
   deployProgress.value = 5
 
   try {
-    const res = await fetch('http://localhost:3000/api/templates/deploy', {
+    const res = await fetch('/api/templates/deploy', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

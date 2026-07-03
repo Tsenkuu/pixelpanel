@@ -243,7 +243,7 @@ const initTerminal = () => {
   })
 
   // Connect WebSocket to backend terminal
-  const socket = io(import.meta.env.VITE_API_URL || 'http://localhost:3000')
+  const socket = io(import.meta.env.VITE_API_URL || '/')
   
   socket.on('connect', () => {
     socket.emit('terminal:start', appId)

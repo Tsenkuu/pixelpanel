@@ -162,7 +162,7 @@ const updateCharts = (history) => {
 onMounted(() => {
   initCharts()
 
-  socket = io('http://localhost:3000')
+  socket = io('/')
 
   socket.on('connect', () => {
     isConnected.value = true
