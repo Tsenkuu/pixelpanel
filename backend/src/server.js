@@ -18,7 +18,12 @@ import { AgentGatewayService } from './services/cluster/agentGatewayService.js';
 import { AutomationService } from './services/cluster/automationService.js';
 import EventBus from './services/eventBus.js';
 
+import { initDatabase } from './repositories/db.js';
+
 const PORT = process.env.PORT || 3000;
+
+// Initialize the SQLite Database Schema
+initDatabase();
 
 const server = http.createServer(app);
 

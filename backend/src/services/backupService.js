@@ -18,9 +18,10 @@ export class BackupService {
         // Run daily (24 hours)
         this.interval = setInterval(() => this.runBackup(), 24 * 60 * 60 * 1000);
         
+        const backupDir = path.resolve(process.cwd(), '../storage/backups');
         // Also run immediately on boot if no backup exists yet
-        if (!fs.existsSync('/var/backups/pixelpanel')) {
-            fs.mkdirSync('/var/backups/pixelpanel', { recursive: true });
+        if (!fs.existsSync(backupDir)) {
+            fs.mkdirSync(backupDir, { recursive: true });
             this.runBackup();
         }
     }
@@ -31,13 +32,14 @@ export class BackupService {
     static async runBackup() {
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
         const backupName = `pixelpanel_backup_${timestamp}.tar.gz`;
-        const backupPath = `/var/backups/pixelpanel/${backupName}`;
+        const backupDir = path.resolve(process.cwd(), '../storage/backups');
+        const backupPath = path.join(backupDir, backupName);
         
         console.log(`[BackupService] Initiating automated backup: ${backupName}`);
 
         try {
             // Paths to backup
-            const dbPath = path.resolve(process.cwd(), 'pixelpanel.sqlite'); // Assuming it's in backend root
+            const dbPath = path.resolve(process.cwd(), '../storage/pixelpanel.db');
             const nginxPath = '/etc/nginx/sites-available';
             const uploadPath = '/var/www/pixelpanel'; // Only uploads, no source code to save space
             
@@ -75,7 +77,7 @@ export class BackupService {
      */
     static rotateBackups() {
         try {
-            const dir = '/var/backups/pixelpanel';
+            const dir = path.resolve(process.cwd(), '../storage/backups');
             if (!fs.existsSync(dir)) return;
             
             const files = fs.readdirSync(dir)
