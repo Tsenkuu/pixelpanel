@@ -1,10 +1,10 @@
 import express from 'express';
 import { AppsController } from '../controllers/appsController.js';
-import { requireAuth } from '../middlewares/authMiddleware.js';
+import { authMiddleware } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
-router.use(requireAuth); // Protect all app routes
+router.use(authMiddleware); // Protect all app routes
 
 router.get('/', AppsController.listApps);
 router.post('/', AppsController.createApp);
