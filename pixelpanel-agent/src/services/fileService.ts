@@ -159,7 +159,7 @@ export class FileService {
         zipResolve(archiveSize);
       });
 
-      archive.on('error', (err) => {
+      archive.on('error', (err: Error) => {
         reject(new Error(`[FileService] Archive creation failed: ${err.message}`));
       });
 
