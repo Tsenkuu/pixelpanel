@@ -78,7 +78,7 @@ app.use('/api/remote', remoteRoutes);
 
 // Serve the install agent bash script
 app.get('/install-agent.sh', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../../scripts/install.sh'));
+    res.sendFile(path.resolve(__dirname, '../../scripts/install-agent.sh'));
 });
 
 // Serve Static Frontend (Production MVP)
