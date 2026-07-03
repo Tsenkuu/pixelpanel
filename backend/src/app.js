@@ -27,7 +27,10 @@ const app = express();
 
 // Security and utility middlewares
 // Security Middleware (Enterprise Grade)
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false
+}));
 app.use(helmet.hidePoweredBy());
 app.use(helmet.noSniff());
 app.use(helmet.xssFilter());
