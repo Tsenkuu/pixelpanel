@@ -76,4 +76,13 @@ app.use('/api/metrics', CacheService.cacheMiddleware, metricsRoutes);
 app.use('/api/cluster', clusterRoutes);
 app.use('/api/remote', remoteRoutes);
 
+// Serve Static Frontend (Production MVP)
+const frontendDistPath = path.join(__dirname, '../../frontend/dist');
+app.use(express.static(frontendDistPath));
+
+// Catch-all route to serve Vue frontend for SPA routing
+app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendDistPath, 'index.html'));
+});
+
 export default app;
