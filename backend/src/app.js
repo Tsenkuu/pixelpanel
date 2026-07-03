@@ -76,6 +76,11 @@ app.use('/api/metrics', CacheService.cacheMiddleware, metricsRoutes);
 app.use('/api/cluster', clusterRoutes);
 app.use('/api/remote', remoteRoutes);
 
+// Serve the install agent bash script
+app.get('/install-agent.sh', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../../scripts/install.sh'));
+});
+
 // Serve Static Frontend (Production MVP)
 const frontendDistPath = path.join(__dirname, '../../frontend/dist');
 app.use(express.static(frontendDistPath));
