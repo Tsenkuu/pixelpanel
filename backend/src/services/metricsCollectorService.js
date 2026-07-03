@@ -46,11 +46,11 @@ export class MetricsCollectorService {
                 stats.memory.total,
                 stats.memory.swapused,
                 stats.memory.swaptotal,
-                stats.fsSize[0]?.used || 0,
-                stats.fsSize[0]?.size || 0,
-                stats.cpuTemperature.main || 0,
-                stats.networkStats[0]?.rx_bytes || 0,
-                stats.networkStats[0]?.tx_bytes || 0
+                stats.fsSize?.[0]?.used || 0,
+                stats.fsSize?.[0]?.size || 0,
+                stats.cpuTemperature?.main || 0,
+                stats.networkStats?.[0]?.rx_bytes || 0,
+                stats.networkStats?.[0]?.tx_bytes || 0
             );
         } catch (e) {
             console.error('[MetricsCollector] Failed to collect metrics:', e.message);

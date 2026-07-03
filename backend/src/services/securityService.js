@@ -3,7 +3,8 @@ import fs from 'fs';
 import path from 'path';
 import db from '../repositories/db.js';
 
-const KEY_PATH = '/etc/pixelpanel/master.key';
+const SECURITY_DIR = path.resolve(process.cwd(), '../storage/security');
+const KEY_PATH = path.join(SECURITY_DIR, 'master.key');
 
 export class SecurityService {
     static masterKey = null;
@@ -14,10 +15,10 @@ export class SecurityService {
      */
     static init() {
         try {
-            if (!fs.existsSync('/etc/pixelpanel')) {
-                fs.mkdirSync('/etc/pixelpanel', { recursive: true });
+            if (!fs.existsSync(SECURITY_DIR)) {
+                fs.mkdirSync(SECURITY_DIR, { recursive: true });
                 // Make the directory highly secure
-                try { fs.chmodSync('/etc/pixelpanel', 0o700); } catch(e){}
+                try { fs.chmodSync(SECURITY_DIR, 0o700); } catch(e){}
             }
 
             if (!fs.existsSync(KEY_PATH)) {

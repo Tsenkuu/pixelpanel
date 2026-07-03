@@ -56,11 +56,11 @@ export class BackupService {
                 return;
             }
 
-            // Create archive
-            await execPromise(`sudo tar -czf "${backupPath}" ${filesToBackup}`);
+            // Create archive without sudo to prevent password prompt hangs in PM2
+            await execPromise(`tar -czf "${backupPath}" ${filesToBackup}`);
             
-            // Secure the backup (only root/admin can read)
-            await execPromise(`sudo chmod 600 "${backupPath}"`);
+            // Secure the backup
+            await execPromise(`chmod 600 "${backupPath}"`);
 
             console.log(`[BackupService] Backup completed successfully: ${backupPath}`);
             SecurityService.logAction('system_backup', 'system', '127.0.0.1', `Automated backup created: ${backupName}`);
