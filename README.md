@@ -34,23 +34,56 @@ PixelPanel uses a Master-Worker architecture:
 1. **Master (PixelPanel Server)**: The central brain. Hosts the SQLite database, the Vue.js frontend, and the API gateway.
 2. **Agent (PixelPanel Node)**: A lightweight daemon (<20MB RAM) installed on remote servers. Manages native processes via PM2, monitors hardware, and executes RPC commands sent by the Master.
 
-## 🚀 Quick Start
+## 🚀 Quick Start (Linux Server)
 
-### 1. Install Master Server
+Follow these steps to install the Master Server on a Linux machine (Ubuntu/Debian/Armbian):
+
+### 1. Install Dependencies (Node.js & PM2)
 ```bash
-git clone https://github.com/yourusername/pixelpanel.git
-cd pixelpanel
+# Update system
+sudo apt update && sudo apt upgrade -y
 
-# Install Backend
-cd backend
-npm install
-npm run start
+# Install curl, git, and build tools
+sudo apt install -y curl git build-essential
 
-# Install Frontend
-cd ../frontend
+# Install Node.js 20.x (LTS)
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-install -y nodejs
+
+# Install PM2 globally
+sudo npm install pm2@latest -g
+```
+
+### 2. Download PixelPanel
+```bash
+sudo git clone https://github.com/Tsenkuu/pixelpanel.git /opt/pixelpanel
+cd /opt/pixelpanel
+sudo chown -R $USER:$USER /opt/pixelpanel
+```
+
+### 3. Build the Frontend PWA
+```bash
+cd /opt/pixelpanel/frontend
 npm install
 npm run build
 ```
+
+### 4. Setup the Backend Master
+```bash
+cd /opt/pixelpanel/backend
+npm install
+```
+
+### 5. Run with PM2
+```bash
+pm2 start src/server.js --name "pixelpanel-master"
+pm2 save
+pm2 startup
+```
+
+That's it! PixelPanel is now running. Open your browser and navigate to `http://<YOUR_SERVER_IP>:3000`.
+
+*Note: For production, we highly recommend putting Nginx with an SSL certificate in front of PixelPanel, as features like Web Push Notifications require HTTPS.*
 
 ### 2. Add a Remote Node
 In the PixelPanel dashboard, navigate to **Cluster > Add Node** and run the provided curl script on your remote server (Ubuntu/Debian/Armbian):
