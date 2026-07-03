@@ -466,7 +466,16 @@ function stopHeartbeat(): void {
 function connect(): void {
   if (isShuttingDown) return;
 
-  const wsUrl = `wss://${MASTER_URL}/agent`;
+  let wsUrl = MASTER_URL!;
+  if (!wsUrl.startsWith('ws://') && !wsUrl.startsWith('wss://')) {
+    // Default to ws:// since this is a local/wireguard MVP
+    wsUrl = `ws://${wsUrl}`;
+  }
+  // Ensure it ends with /agent
+  if (!wsUrl.endsWith('/agent')) {
+    wsUrl = wsUrl.endsWith('/') ? `${wsUrl}agent` : `${wsUrl}/agent`;
+  }
+  
   log('info', `Connecting to master at ${wsUrl}...`);
 
   ws = new WebSocket(wsUrl, {
