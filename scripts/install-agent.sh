@@ -64,7 +64,7 @@ chmod -R 775 /opt/pixelpanel-agent
 
 echo "[4/4] Starting Agent Daemon..."
 # Run PM2 as the user who invoked sudo (usually pypboy)
-su - $SUDO_USER -c "cd /opt/pixelpanel-agent && pm2 start dist/agent.js --name 'pixelpanel-agent' -- --token '$TOKEN' --master '$MASTER_URL' && pm2 save"
+su - $SUDO_USER -c "cd /opt/pixelpanel-agent && MASTER_URL='$MASTER_URL' NODE_TOKEN='$TOKEN' NODE_ID='agent-$(hostname)' pm2 start dist/agent.js --name 'pixelpanel-agent' --update-env && pm2 save"
 
 echo "===================================================="
 echo " Agent Installation Complete! "
