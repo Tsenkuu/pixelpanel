@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light Mode - Aurora Glass */
+    --color-background: 250 250 250;
+    --color-surface: 255 255 255;
+    --color-surface-hover: 245 245 245;
+    --color-border: 229 231 235;
+    
+    --color-primary: 17 24 39;
+    --color-secondary: 107 114 128;
+    
+    --color-accent: 99 102 241; /* Indigo */
+    --color-accent-hover: 79 70 229;
+    
+    --color-success: 16 185 129;
+    --color-warning: 245 158 11;
+    --color-error: 239 68 68;
+
+    /* Mesh Gradient Colors */
+    --mesh-1: 99, 102, 241; /* Indigo */
+    --mesh-2: 168, 85, 247; /* Purple */
+    --mesh-3: 14, 165, 233; /* Sky */
+  }
+
+  .dark {
+    /* Dark Mode - Aurora Glass */
+    --color-background: 10 10 12;
+    --color-surface: 20 20 24;
+    --color-surface-hover: 30 30 36;
+    --color-border: 45 45 55;
+    
+    --color-primary: 249 250 251;
+    --color-secondary: 156 163 175;
+    
+    --color-accent: 129 140 248; /* Indigo light */
+    --color-accent-hover: 165 180 252;
+  }
+
+  html {
+    @apply antialiased scroll-smooth;
+  }
+
+  body {
+    /* We use rgb() wrapper in tailwind config to apply the opacity */
+    @apply bg-background text-primary selection:bg-accent/30 transition-colors duration-500 font-sans;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full hover:bg-secondary transition-colors;
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-surface/70 backdrop-blur-xl border border-border shadow-lg transition-all duration-300;
+  }
+  .glass-header {
+    @apply bg-background/80 backdrop-blur-2xl border-b border-border transition-all duration-300;
+  }
+  .mesh-gradient {
+    background: radial-gradient(circle at 0% 0%, rgba(var(--mesh-1), 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(var(--mesh-2), 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 100% 0%, rgba(var(--mesh-3), 0.15) 0%, transparent 50%);
+  }
+  .spring-hover {
+    @apply transition-transform duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] hover:-translate-y-1 hover:scale-[1.02];
+  }
+  
+  .btn-primary {
+    @apply bg-accent hover:bg-accent-hover text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background;
+  }
+  
+  .btn-secondary {
+    @apply bg-surface hover:bg-surface-hover border border-border hover:border-secondary text-primary font-medium py-2 px-4 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-background;
+  }
+}
+
+/* NProgress styling */
+#nprogress .bar {
+  background: rgb(var(--color-accent)) !important;
+  height: 2px !important;
+}
+#nprogress .peg {
+  box-shadow: 0 0 10px rgb(var(--color-accent)), 0 0 5px rgb(var(--color-accent)) !important;
+}

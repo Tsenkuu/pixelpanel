@@ -1,0 +1,6 @@
+{
+    "name": "Hello World Plugin",
+    "version": "1.0.0",
+    "description": "A test plugin to verify the SDK functionality.",
+    "author": "PixelPanel Core Team"
+}

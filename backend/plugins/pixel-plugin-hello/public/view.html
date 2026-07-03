@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World Plugin</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e1e1e;
+            color: #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        h1 {
+            color: #41b883;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007acc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #005999;
+        }
+        #result {
+            margin-top: 20px;
+            font-family: monospace;
+            background: #333;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Hello from PixelPanel Plugin!</h1>
+        <p>This UI is provided entirely by a sandboxed third-party plugin.</p>
+        <button onclick="pingBackend()">Test Custom API Route</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function pingBackend() {
+            try {
+                // Fetch the custom API route registered by this plugin in index.js
+                const response = await fetch('/api/plugins/custom/pixel-plugin-hello/ping');
+                const data = await response.json();
+                document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+            } catch (e) {
+                document.getElementById('result').innerText = 'Error: ' + e.message;
+            }
+        }
+    </script>
+</body>
+</html>
