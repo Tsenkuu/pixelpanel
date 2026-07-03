@@ -14,13 +14,18 @@ export class SystemService {
      */
     static async getRealtimeStats() {
         try {
+            // Wrap each call individually because 'systeminformation' library might crash internally on some OS
+            const safeSi = async (fn, defaultVal) => {
+                try { return await fn(); } catch (e) { return defaultVal; }
+            };
+
             const [cpu, mem, os, currentLoad, fsSize, networkStats] = await Promise.all([
-                si.cpu(),
-                si.mem(),
-                si.osInfo(),
-                si.currentLoad(),
-                si.fsSize(),
-                si.networkStats()
+                safeSi(() => si.cpu(), {}),
+                safeSi(() => si.mem(), { active: 0, total: 1, free: 0, used: 0 }),
+                safeSi(() => si.osInfo(), {}),
+                safeSi(() => si.currentLoad(), { currentLoad: 0 }),
+                safeSi(() => si.fsSize(), []),
+                safeSi(() => si.networkStats(), [])
             ]);
 
             const now = new Date().toLocaleTimeString();

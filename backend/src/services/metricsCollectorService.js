@@ -31,12 +31,17 @@ export class MetricsCollectorService {
 
     static async collect() {
         try {
+            // Wrap each call individually because 'systeminformation' library might crash internally on some OS
+            const safeSi = async (fn, defaultVal) => {
+                try { return await fn(); } catch (e) { return defaultVal; }
+            };
+
             const [cpu, mem, fsSize, networkStats, temp] = await Promise.all([
-                si.currentLoad(),
-                si.mem(),
-                si.fsSize(),
-                si.networkStats(),
-                si.cpuTemperature()
+                safeSi(() => si.currentLoad(), {}),
+                safeSi(() => si.mem(), {}),
+                safeSi(() => si.fsSize(), []),
+                safeSi(() => si.networkStats(), []),
+                safeSi(() => si.cpuTemperature(), {})
             ]);
             
             const stmt = db.prepare(`
