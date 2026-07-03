@@ -19,7 +19,9 @@ import { createReadStream, createWriteStream } from 'node:fs';
 import { join, resolve, basename } from 'node:path';
 import { pipeline } from 'node:stream/promises';
 import { createGunzip } from 'node:zlib';
-import archiver from 'archiver';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const archiver = require('archiver');
 import type { FileEntry } from '../types.js';
 
 /** Maximum file read size: 5MB */
