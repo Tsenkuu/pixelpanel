@@ -1,5 +1,5 @@
 import db from '../repositories/db.js';
-import { SystemService } from './systemService.js';
+import si from 'systeminformation';
 
 export class MetricsCollectorService {
     static interval = null;
@@ -31,7 +31,13 @@ export class MetricsCollectorService {
 
     static async collect() {
         try {
-            const stats = await SystemService.getRealtimeStats();
+            const [cpu, mem, fsSize, networkStats, temp] = await Promise.all([
+                si.currentLoad(),
+                si.mem(),
+                si.fsSize(),
+                si.networkStats(),
+                si.cpuTemperature()
+            ]);
             
             const stmt = db.prepare(`
                 INSERT INTO metrics (
@@ -41,16 +47,16 @@ export class MetricsCollectorService {
             `);
             
             stmt.run(
-                stats.cpu.currentLoad,
-                stats.memory.active,
-                stats.memory.total,
-                stats.memory.swapused,
-                stats.memory.swaptotal,
-                stats.fsSize?.[0]?.used || 0,
-                stats.fsSize?.[0]?.size || 0,
-                stats.cpuTemperature?.main || 0,
-                stats.networkStats?.[0]?.rx_bytes || 0,
-                stats.networkStats?.[0]?.tx_bytes || 0
+                cpu.currentLoad || 0,
+                mem.active || 0,
+                mem.total || 0,
+                mem.swapused || 0,
+                mem.swaptotal || 0,
+                fsSize?.[0]?.used || 0,
+                fsSize?.[0]?.size || 0,
+                temp?.main || 0,
+                networkStats?.[0]?.rx_bytes || 0,
+                networkStats?.[0]?.tx_bytes || 0
             );
         } catch (e) {
             console.error('[MetricsCollector] Failed to collect metrics:', e.message);
